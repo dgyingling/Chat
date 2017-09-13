@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{base :: common_header(~{::title/text()},~{::link})}">
+	<title>编辑个人信息</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/resources/css/wangEditor.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/resources/css/editProfile.css}">
+	
+</head>
+
+
+<body>
+	<div th:replace="base :: common_top"></div>
+
+
+	<!-- 中间主体板块 -->
+	<div class="main w clearfix" th:object="${user }">
+		<div class="edit-header"><span></span>&nbsp;修改信息</div>
+		<form th:action="@{/saveProfile}" method="post" >
+			<div class="edit-title">
+                <input type="hidden" name="uid" th:value="*{uid}"> 
+				昵&nbsp;&nbsp;&nbsp;称：<input type="text" name="nickname" th:value="*{nickname}">
+			</div>
+			<div class="edit-radio">
+				性&nbsp;&nbsp;&nbsp;别：<label><input name="gender" type="radio" value="0" th:checked="*{gender}==0 ? true"/>男 </label> &nbsp;&nbsp;
+					<label><input name="gender" type="radio" value="1" th:checked="*{gender}==1 ? true"/>女 </label> 
+			</div>
+			<div class="edit-title">
+				年&nbsp;&nbsp;&nbsp;龄：<input type="text" name="age" th:value="*{age}">
+			</div>
+			<div class="edit-title">
+				签&nbsp;&nbsp;&nbsp;名：<input type="text" name="description" th:value="*{description}">
+			</div>
+			<div class="edit-title">
+				位&nbsp;&nbsp;&nbsp;置：<input type="text" name="position" th:value="*{position}">
+			</div>
+			 
+			<div class="edit-title">
+				工&nbsp;&nbsp;&nbsp;作：<input type="text" name="job" th:value="*{job}">
+			</div>
+			<div class="relative">
+				<button class="edit-submit">确认修改</button>
+			</div>
+		</form>
+
+       
+
+        <div style="margin-top: 60px;"></div>
+        <div class="edit-header"><span></span>&nbsp;更换头像</div>
+        <form id="uploadImage" method="post" action="" enctype="multipart/form-data">
+            <div class="edit-title">
+				<span class="text-danger" th:utext="${uploadError}">error</span>
+                <input type="file" name="file" id="file" >
+            </div>
+            <div class="relative">
+                <button class="edit-submit" id="uploadBotton" onclick="upload()">确认更新</button>
+            </div>
+        </form>
+
+	</div><!-- 主体结束 -->
+
+<div th:replace="base :: common_footer"></div>
+<script type="text/javascript" th:src="@{/resources/js/jquery.form.js}"></script>
+
+<script th:inline="javascript">
+	function upload(){
+		var f=document.getElementById("file").value;
+	  	if(f==""){ 
+	  		alert("请选择图片");
+	  		return false;
+	  	}else if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(f)){
+		  alert("图片类型必须是.gif,jpeg,jpg,png中的一种")
+		  return false;
+		}else{
+			$("#uploadImage").ajaxForm({
+				type:"POST"	,
+				url:[[@{/uploadImage}]],
+				success : function(){
+					alert("上传成功");
+				},
+				error : function(error){
+					alert("上传失败");
+				}
+			});	
+		}
+        
+	}
+		
+	
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base :: common_header(~{::title/text()},~{::link})">
+	<title>注册成功</title>
+	<link rel="stylesheet" type="text/css" href="css/wangEditor.css">
+	<link rel="stylesheet" type="text/css" href="css/login.css">
+	<style type="text/css">
+		.main div{
+            margin: 200px auto;
+            width: 600px;
+            font-size: 20px;
+		}
+	</style>
+</head>
+<body>
+<div th:replace="base :: common_top"></div>
+	<!-- 中间主体板块 -->
+	<div class="main w clearfix">
+		<div>
+			<p th:text="${info}"/>
+		</div>
+	</div><!-- 主体结束 -->
+<div th:replace="base :: common_footer"></div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+	
+	<import resource="spring-dao.xml"/>
+	<import resource="spring-service.xml"/>
+	<import resource="spring-shiro.xml"/> 
+	
+	<bean class="com.steel.config.SpringWebConfig"></bean> 
+	<bean class="com.steel.config.SpringSchedualConfig"></bean>
+	
+	<context:property-placeholder location="classpath:*.properties"/>
+	<!-- 配置email -->
+	<bean  class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.host}"></property>
+		<property name="username" value="${mail.username}"></property>
+		<property name="password" value="${mail.password}"></property>
+		 <property name="port" value="${mail.port}"></property> 
+	</bean>
+</beans>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+	<context:component-scan base-package="com.steel.shiro"></context:component-scan>
+	
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager"/>
+		<property name="loginUrl" value="/toLogin"></property>
+		<property name="successUrl" value="/"></property>
+		<property name="filterChainDefinitions">
+			<value>
+				/ = anon
+				/toPost/* = anon
+				/login  = anon
+				/register = anon
+				/activate = anon
+				/forgetPassword = anon
+				/changePw = anon
+				/resetPassword = anon
+				/toOtherPage/* =anon
+				/toProfile/* = anon
+				/logout = logout
+				/resources/** = anon
+				/** = authc
+				
+			</value>
+		</property>
+	</bean>
+	
+	<bean id="jdbcRealm" class="org.apache.shiro.realm.jdbc.JdbcRealm">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="authenticationQuery" value="select password from user where email = ?"/>
+       <!--  <property name="userRolesQuery" value="select r.role_name from user u, user_role ur, role r where u.id = ur.user_id and r.id = ur.role_id and u.username = ?"/>
+        <property name="permissionsQuery" value="select p.permission_name from role r, role_permission rp, permission p where r.id = rp.role_id and p.id = rp.permission_id and r.role_name = ?"/>
+        <property name="permissionsLookupEnabled" value="true"/> -->
+       
+        <property name="credentialsMatcher" ref="passwordMatcher"/>
+    </bean>
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="jdbcRealm"></property>
+		
+	</bean>
+	
+    <!-- 缓存管理 -->  
+   
+    <bean id="passwordMatcher" class="org.apache.shiro.authc.credential.PasswordMatcher"/>
+    <bean id="passwordService" class="org.apache.shiro.authc.credential.DefaultPasswordService"/>
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"></bean> 
+	
+	<!-- <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">  
+	    <property name="hashAlgorithmName" value="md5"/>  
+	    <property name="hashIterations" value="2"/>  
+	    <property name="storedCredentialsHexEncoded" value="true"/>  
+	</bean> --> 
+	<!-- <bean id="myRealm" class="com.steel.shiro.UserRealm"></bean> -->
+</beans>

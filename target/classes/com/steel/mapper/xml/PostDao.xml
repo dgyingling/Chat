@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.steel.mapper.PostDao">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.steel.entity.Post">
+		<id column="pid" property="pid" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="publish_time" property="publishTime" />
+		<result column="reply_time" property="replyTime" />
+		<result column="reply_count" property="replyCount" />
+		<result column="like_count" property="likeCount" />
+		<result column="scan_count" property="scanCount" />
+		
+	</resultMap>
+	
+	<resultMap id="PostResultMap" type="com.steel.entity.Post">
+		<id column="pid" property="pid" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="publish_time" property="publishTime" />
+		<result column="reply_time" property="replyTime" />
+		<result column="reply_count" property="replyCount" />
+		<result column="like_count" property="likeCount" />
+		<result column="scan_count" property="scanCount" />
+		<association column="uid" property="user" javaType="com.steel.entity.User" >
+			<id column="uid" property="uid"></id>
+			<result column="nickname" property="nickname"></result>
+			<result column="head_url" property="headUrl"></result>
+		</association>	
+	</resultMap>
+	
+	<select id="selectAllPosts" resultMap="PostResultMap">
+		select * from Post p,User u where p.uid = u.uid
+	</select>
+	<insert id="insertPost">
+		insert into Post(title,content,publish_time,reply_count,like_count,scan_count,uid) 
+		values(#{title},#{content},#{publishTime},#{replyCount},#{likeCount},#{scanCount},#{user.uid})
+	</insert>
+	<select id="selectPostById" resultMap="PostResultMap">
+		select * from Post p,User u where p.pid = #{pid} and p.uid = u.uid
+	</select>
+	<select id="selectPostsByUid" resultMap="BaseResultMap">
+		select * from Post p where p.uid = #{uid}
+	</select>
+	<update id="updateReplyCount">
+        update post set reply_count = #{replyCount} where pid = #{pid}
+    </update>
+
+    <update id="updateScanCount">
+        update post set scan_count = scan_count + #{postScan}  where pid = #{pid}
+    </update>
+
+    <update id="updateReplyTime">
+        update post set reply_time = #{replyTime} where pid=#{pid}
+    </update>
+    <update id="updateLikeCount">
+        update post set like_count = like_count + 1 where pid = #{pid}
+    </update> 
+  	<select id="selectAllPids" resultType="int">
+  		select pid from post
+  	</select>
+  	
+</mapper>

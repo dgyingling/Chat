@@ -1,0 +1,16 @@
+0:0:0:0:0:0:0:1 - - [13/Jul/2017:22:45:30 +0800] "GET /PropertyMIS HTTP/1.1" 302 - http-bio-8080-exec-1 0
+0:0:0:0:0:0:0:1 - - [13/Jul/2017:22:45:35 +0800] "GET /PropertyMIS/ HTTP/1.1" 200 7562 http-bio-8080-exec-2 5036
+0:0:0:0:0:0:0:1 - - [13/Jul/2017:22:45:37 +0800] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-3 0
+0:0:0:0:0:0:0:1 - - [13/Jul/2017:22:47:29 +0800] "GET /PropertyMIS/toLogin HTTP/1.1" 200 5742 http-bio-8080-exec-5 101
+0:0:0:0:0:0:0:1 - - [13/Jul/2017:22:47:30 +0800] "GET /PropertyMIS/resources/js/jquery.form.js HTTP/1.1" 304 - http-bio-8080-exec-7 564
+0:0:0:0:0:0:0:1 - - [13/Jul/2017:22:47:30 +0800] "GET /PropertyMIS/resources/css/login.css HTTP/1.1" 304 - http-bio-8080-exec-6 670
+0:0:0:0:0:0:0:1 - - [13/Jul/2017:22:47:34 +0800] "POST /PropertyMIS/login HTTP/1.1" 302 - http-bio-8080-exec-9 423
+0:0:0:0:0:0:0:1 - - [13/Jul/2017:22:47:34 +0800] "GET /PropertyMIS/;jsessionid=3C329C2CF6D56E3449D68B484334EDCC?email=2035119650%40qq.com HTTP/1.1" 200 7767 http-bio-8080-exec-10 36
+0:0:0:0:0:0:0:1 - - [13/Jul/2017:22:47:36 +0800] "GET /PropertyMIS/toMyProfile HTTP/1.1" 200 4408 http-bio-8080-exec-10 227
+0:0:0:0:0:0:0:1 - - [13/Jul/2017:22:47:36 +0800] "GET /PropertyMIS/resources/css/profile.css HTTP/1.1" 304 - http-bio-8080-exec-10 62
+0:0:0:0:0:0:0:1 - - [13/Jul/2017:22:50:19 +0800] "GET /PropertyMIS/logout HTTP/1.1" 302 - http-bio-8080-exec-4 4
+0:0:0:0:0:0:0:1 - - [13/Jul/2017:22:50:19 +0800] "GET /PropertyMIS/ HTTP/1.1" 200 7562 http-bio-8080-exec-4 26
+0:0:0:0:0:0:0:1 - - [13/Jul/2017:22:50:21 +0800] "GET /PropertyMIS/toLogin HTTP/1.1" 200 5742 http-bio-8080-exec-4 12
+0:0:0:0:0:0:0:1 - - [13/Jul/2017:22:52:23 +0800] "GET /PropertyMIS/ HTTP/1.1" 200 7562 http-bio-8080-exec-9 30
+0:0:0:0:0:0:0:1 - - [13/Jul/2017:22:52:25 +0800] "GET /PropertyMIS/toPost/2 HTTP/1.1" 200 9715 http-bio-8080-exec-9 247
+0:0:0:0:0:0:0:1 - - [13/Jul/2017:22:52:25 +0800] "GET /PropertyMIS/resources/css/post.css HTTP/1.1" 304 - http-bio-8080-exec-9 25

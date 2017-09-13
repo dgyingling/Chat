@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.steel.mapper.UserDao">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.steel.entity.User">
+		<id column="uid" property="uid" />
+		<result column="email" property="email" />
+		<result column="password" property="password" />
+		<result column="actived" property="actived" />
+		<result column="activate_code" property="activateCode" />
+		<result column="join_time" property="joinTime" />
+		<result column="username" property="username" />
+		<result column="gender" property="gender" />
+		<result column="age" property="age" />
+		<result column="description" property="description" />
+		<result column="head_url" property="headUrl" />
+		<result column="position" property="position" />
+		<result column="job" property="job" />
+		<result column="enabled" property="enabled"/>
+		<result column="post_count" property="postCount" />
+		<result column="scan_count" property="scanCount" />
+		<result column="salt" property="salt" />
+		
+	</resultMap>
+	
+	<update id="updateActived">
+        update user set actived=1 where activate_code=#{activateCode}
+    </update>
+    <select id="selectEmailCount" resultType="int">
+    	select count(*) from user where email = #{email}
+    </select>
+    <!--判断是否存在该邮箱  -->
+    <select id="selectUserByEmail" resultMap="BaseResultMap">
+    	select * from user where email = #{email}
+    </select>
+    <select id="selectUserById" resultMap="BaseResultMap">
+    	select * from user where uid = #{uid}
+    </select>
+    <select id="selectUserByCode" resultMap="BaseResultMap">
+    	select * from user where activate_code = #{code}
+    </select>
+  <!--   <update id="updatePostCount">
+   		 
+    	update user
+    	<set>
+        	<if test="#{inde}!=null">post_count= post_count+1</if>
+        	<if test="#{inde}==null">post_count= post_count-1</if>
+        </set>
+    	 where uid = #{uid} 
+    </update> -->
+    <update id="incrPostCount">
+    	update user set post_count = post_count + 1 where uid = #{uid} 
+    </update>
+    <update id="decrPostCount">
+    	update user set post_count = post_count - 1 where uid = #{uid}     
+    </update>
+    <select id="selectAllUids" resultType="int">
+    	select uid from user
+    </select>
+    <update id="updateScanCount">
+        update user set scan_count = scan_count + #{userScan}  where uid = #{uid}
+    </update>
+    <update id="updatePassword">
+    	update user set password = #{password} where uid = #{uid}
+    </update>
+   <update id="updateUser">
+   		update user set nickname = #{nickname},gender = #{gender},age = #{age},
+   		description = #{description},position = #{position},job = #{job} where uid = #{uid}
+   </update>
+</mapper>

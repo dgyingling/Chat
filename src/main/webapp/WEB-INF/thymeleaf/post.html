@@ -1,0 +1,229 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base :: common_header(~{::title/text()},~{::link})">
+	<title>帖子</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<link rel="stylesheet" type="text/css" th:href="@{/resources/css/wangEditor.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/resources/css/post.css}">
+</head>
+<body>
+
+<div th:replace="base :: common_top"></div>
+	<!-- 中间主体板块 -->
+	<div class="main w clearfix">
+
+		<!-- 主体左部分 -->
+		<div class="main-left">
+			
+			<!-- 帖子内容板块 -->
+			<div class="post-content"   th:object="${post}">
+				<div class="post-title">
+					<span class="glyphicon glyphicon-th"  th:utext="*{title}"></span>&nbsp;
+				</div>
+				<div class="post-user clearfix">
+					<div class="user-image"><a th:href="@{/toProfile/{uid}(uid=*{user.uid})}"><img th:src="*{user.headUrl}"></a></div>
+					<div class="user-info">
+						<div class="user-name" th:utext="*{user.nickname}"></div>
+						<div class="post-time">编辑于<span th:utext="${#dates.format(post.publishTime,'dd/MM/yyyy HH:mm')}"></span> </div>
+					</div>
+					<div class="other-count">
+						<a href="#">回复<span class="reply-count" th:utext="*{replyCount}"> </span></a>&nbsp;
+                        <a href="#" id="like-button"  class="up-count" th:if="${session.user}==null or ${liked}==false">赞 <span th:utext="*{likeCount}" ></span></a>&nbsp;
+                        <a style="color:#2e6da4;"  th:if="${liked}==true">已赞 <span class="up-count" th:utext="*{likeCount}"></span></a>&nbsp;
+						<a href="#">浏览 <span class="scan-count" th:utext="*{scanCount}"></span></a>
+					</div>
+				</div>
+				<div class="post-desc" th:utext="*{content}"></div>
+			</div>
+
+
+
+			<!-- 帖子回复内容板块 -->
+			<div class="post-reply">
+				<!-- 回复区标题 -->
+				<div class="post-reply-title">
+					<h2 class="reply-count"><span class="glyphicon glyphicon-th" th:utext="${post.replyCount }"></span>&nbsp;条回帖</h2>
+					<a href="#reply-area">回复</a>
+				</div>
+				<!-- 回复区内容 -->
+				<div class="post-reply-content"  th:each="comment,status1 : ${commentList}">
+					<!-- 回复条目 -->
+                        <div class="post-reply-item clearfix" th:object="${comment}">
+                        	
+	                            <div class="item-image"><a th:href="@{/toProfile/{uid}(uid=${comment.user.uid})}"><img th:src="${comment.user.headUrl}"></a></div>
+	                            <div class="item-info">
+	                                <div class="item-user-name"><a href="#" th:utext="*{user.nickname}"></a></div>
+	                                <div class="item-content" th:utext="*{content}"></div>
+	                                <div class="item-date">发表于<span th:utext="${#dates.format(comment.commentTime,'dd/MM/yy HH:mm')}"></span></div>
+                                
+							
+                                <!-- 楼中楼，即嵌套的回复内容 -->
+                                <div class="item-more" >
+                                      <div th:each="reply,status : *{replyList}" class="content">
+                                        <div class="item-wrap" th:object="${reply}">
+                                            <div class="item-more-1">
+                                                <a th:href="@{/toProfile/{uid}(uid=${reply.user.uid})}" class="item-more-user" th:utext="*{user.nickname}"></a>
+                                               <span th:if="${reply.replyTo!=null}">&nbsp;回复&nbsp;</span>[[${reply.replyTo}]]<span>：</span>
+                                                <span class="item-more-content" th:utext="*{content}"></span>
+                                            </div>
+
+                                            <div class="item-more-date" th:utext="${#dates.format(reply.replyTime,'dd/MM/yyyy HH:mm')}"></div>
+                                            <div class="item-more-other">
+                                                <a href="" class="item-more-reply">回复</a>&nbsp;
+                                            </div>
+                                        </div><!-- 一个wrap结束-->
+                                   		 <!-- 楼中楼的回复框 -->
+	                                    <div class="reply-input">
+	                                        <form method="post" th:action="@{/doReply}" class="replyForm">
+	                                        	<input type="hidden" th:value="${reply.user.nickname}" name="replyTo">
+	                                        	<input type="hidden" th:value="${post.pid}" name="pid">
+	                                        	<input type="hidden" th:value="${comment.cid}" name="cid">                                     	
+	                                            <textarea class="textarea" name="content" th:placeholder="'@'+${reply.user.nickname}+':'" required></textarea>
+	                                            <button type="submit">回复</button>
+	                                        </form>
+	                                    </div>
+									</div>
+                                   
+                                     
+                                </div><!-- 楼中楼结束 -->
+                               <!--  <div class="showmore">
+		                     		 <a href="#" style=""><span>查看更多信息</span></a><br>
+		                     	 <hr>
+	               				 </div> -->
+								<div class="reply-input">
+	                                <form method="post" th:action="@{/doReply}" class="replyForm">
+	                                	
+	                                	<input type="hidden" th:value="${post.pid}" name="pid">
+	                                	<input type="hidden" th:value="${comment.cid}" name="cid">                                     	
+	                                    <textarea name="content" class="textarea" required></textarea>
+	                                    <button type="submit">回复</button>
+	                                </form>
+                         		</div>
+                            </div>
+                            <div class="item-other">
+                                <a href="#s" class="item-more-reply">回复</a>&nbsp;
+                            </div>
+							
+                        </div>
+                   <!-- 回复条目结束 -->
+				</div>
+			</div>
+
+
+
+			<!-- 回复区，付文本编辑器板块 -->
+			<div id="reply-area" class="post-reply-textarea">
+				<div style="width: 650px;margin: 10px 20px">
+					<form th:action="@{/comment/{pid}(pid=*{pid})}" method="post" enctype="multipart/form-data">
+						<textarea name="content" id="textarea" style="height: 200px;max-height: 1000px;" class="textarea" required></textarea>
+						<button class="reply-button">回帖</button>
+					</form>
+				</div>
+			</div>
+
+		</div>
+
+
+		<!-- 主体右部分 -->
+		<div class="main-right">
+			<div class="hot-user">
+				<div class="clearfix"><div class="hot-user-title"><span></span>&nbsp;</div></div>
+				<ul class="hot-user-list">
+                    
+				</ul>
+			</div>
+		</div>
+	</div>
+
+
+
+<div th:replace="base :: common_footer"></div>
+
+
+<script type="text/javascript" th:src="@{/resources/js/wangEditor.js}"></script>
+
+<script th:inline="javascript">
+
+	
+
+    var editor = new wangEditor('textarea');
+
+    editor.config.menus = [
+        'source',
+        '|',
+        'bold',
+        'underline',
+        'italic',
+        'strikethrough',
+        'eraser',
+        'fontsize',
+        '|',
+        'link',
+        'table',
+        'emotion',
+        '|',
+        'img',
+        'insertcode',
+        '|',
+        'undo',
+    ];
+   
+    
+    //配置处理图片上传的路径，最好用相对路径
+    editor.config.uploadImgUrl = [[@{/upload}]];
+
+    //配置图片上传到后台的参数名称
+    editor.config.uploadImgFileName = 'myFileName';
+ // 自定义load事件
+    editor.config.uploadImgFns.onload = function (resultText, xhr) {
+        var originalName = editor.uploadImgOriginalName || '';  
+        editor.command(null, 'insertHtml', '<img src="' + resultText + '" alt="' + originalName + '" style="max-width:100%;"/>');
+    };
+    editor.config.uploadImgFns.onerror = function (xhr) {
+      	
+        alert('上传错误');
+    };
+    editor.create();
+   
+    //点赞按钮处理
+    
+    var likeButton = $("#like-button");
+  	 var user = [[${session.user}]];
+    likeButton.click(function(){
+    	if(user == null){
+    		alert("请先去登录");
+    	}else{
+    	$.ajax({
+    		type:"GET",
+    	 	url:/*[[@{/ajaxClickLike/{pid}(pid=${post.pid})}]]*/,
+    	 	data:{uid:/*[[${post.user.uid}]]*/},
+            success:function(response){
+            	 likeButton.text("已赞"+response);
+            	 likeButton.removeAttr("href");
+            }	
+    	 });	
+    	}
+    
+    });
+    $(".reply-input").hide();
+	$(".item-more-reply").each(function(index){
+	   		
+			$(this).click(function(){
+				 if($(this).hasClass("hadClick")){
+					$(".reply-input:eq("+index+")").hide();
+					$(this).removeClass("hadClick");
+				} 
+				 else{
+				$(".reply-input:eq("+index+")").show();
+				$(this).addClass("hadClick");}
+				 return false;
+			});
+		
+	  });
+		
+		
+		
+</script>
+</body>
+</html>

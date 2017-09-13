@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{base :: common_header(~{::title/text()},~{::link})}">
+	<title>首页</title>
+</head>
+<body>
+<div th:replace="base :: common_top"></div>
+<div class="main w clearfix">
+		<div class="main-left">
+			<div class="share">
+				<div class="share-left"><span></span>&nbsp;热点分享</div>
+				<div class="share-right">
+					<a th:href="@{/toPublish}"><span class="glyphicon glyphicon-pencil"></span>&nbsp;我要发布</a>
+				</div>
+			</div>
+			<div class="post">
+				<div class="post-wrap">
+					<div class="post-choice">
+						<a href="#" class="post-choice-current">最近</a>
+						<a href="#">最热</a>
+						<a href="#" class="post-choice-last">精华</a>
+					</div>
+
+					<ul class="post-list" th:each="post : ${page.records}">
+                            <li class="clearfix" th:object="${post}">
+                                <div class="post-image">
+                                    <a th:href="@{/toProfile/{uid}(uid=${post.user.uid})}"><img th:src="*{user.headUrl}"></a>
+                                </div>
+                                <div class="post-content">
+                                    <div class="post-title"><a th:href="@{/toPost/{pid}(pid=${post.pid})}" th:utext="*{title}"></a></div>
+                                    <div class="post-other">
+                                        <div class="post-other-left">
+                                            <span class="post-username"><a href="toProfile.do?uid=${post.uid}" th:utext="*{user.nickname}"></a></span>
+                                            <span>&nbsp;发表于</span>
+                                            <span class="post-time" th:with="publishTime=*{publishTime}" th:utext="${#dates.format(publishTime, 'dd/MMM/yyyy HH:mm')}">&nbsp;</span>
+                                          
+                                            <span th:if="${post.replyTime}!=null">&nbsp;最后回复&nbsp;</span>
+                                            <span class="post-reply-time" th:with="replyTime=*{replyTime}" th:utext="${#dates.format(replyTime,'dd/MM/yyyy HH:mm')}"></span>
+                                           
+                                        </div>
+                                        <div class="post-other-right">
+                                       	   回复 <span class="post-reply-count" th:utext="*{replyCount}"></span>&nbsp;
+                                                                                                                            赞 <span class="post-like-count" th:utext="*{likeCount}"></span>&nbsp;
+                                                                                                                            浏览 <span class="post-scan-count" th:utext="*{scanCount}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+					</ul>
+
+              		 <!--分页导航 -->
+                    <nav class="col-md-10 col-md-offset-2">
+                        <ul class="pagination pagination-sm" >
+                           <!--首页-->
+                            <li><a th:href="@{/toOtherPage/1}">首页</a></li>
+                            <!-- 上一页 -->
+                            
+                           <li><a th:href="@{/toOtherPage/{current}(current=${page.current-1})}"  th:if="${page.current!=1 }"><span>&laquo;</span></a></li>
+                              
+                          
+                           <!-- 中间部分-->
+                         
+	                        <li class="pageNum"  th:each="index : ${#numbers.sequence(0,page.total)}"><a th:href="@{/toOtherPage/{current}(current=${index+1})}" th:utext="${index+1}"></a></li>
+	                          
+                             
+                            <!--下一页 -->
+                            
+                            <li><a th:href="@{/toOtherPage/{current}(current=${page.current+1})}" th:if="${page.current}<=${page.pages}+1"><span>&raquo;</span></a></li>
+                               
+                                
+                           <!--尾页-->
+                            <li><a th:href="@{/toOtherPage/{current}(current=${page.pages+2})}">尾页</a></li>
+                        </ul>
+                    </nav>
+
+				</div>
+			</div>
+		</div>
+		<div class="main-right">
+			
+			<div class="hot-user">
+				
+			</div>
+
+			<div class="hot-user">
+				
+			</div>
+
+		</div>
+	</div>
+<div th:replace="base :: common_footer"></div>
+
+<script type="text/javascript">
+    $(function(){
+        var curPage = ${pageBean.curPage};
+        $(".pageNum").each(function(){
+            if($(this).text()==curPage){
+                $(this).addClass("active");
+            }
+        });
+    });
+</script>
+</body>
+</html>

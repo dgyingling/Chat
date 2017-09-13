@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<!-- <img  th:src="@{/resources/images/timg.jpg}"> -->
+	 Hello, <p th:text="${email}">Peter Static!</p>
+	 欢迎您注册DG论坛，请点击下面的链接激活用户，如果不能点击请手动复制到地址栏中执行接激活账号！
+	<p th:text="@{${url}+'activate?code='+${code}}">ss</p>
+</body>
+</html>

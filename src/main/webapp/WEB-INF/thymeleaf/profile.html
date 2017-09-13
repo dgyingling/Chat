@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base :: common_header(~{::title/text()},~{::link})">
+	<title>个人主页</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/resources/css/wangEditor.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/resources/css/profile.css}">
+</head>
+<body>
+<div th:replace="base :: common_top"></div>
+	<!-- 中间主体板块 -->
+	<div class="main w clearfix" >
+		<div class="m-left">
+			<div class="user-image"><img th:src="${user.headUrl}"></div>
+			<div class="user-info" th:object="${user }">
+			
+				<div class="user-name" th:utext="*{nickname }"></div>
+				<div class="user-age" >年龄：<span th:utext="*{age }"></span></div>
+				<div class="user-gender" >性别：<span th:utext="*{gender}==0 ? '男': '女'"></span></div>
+				<div class="user-desc">签名：<span th:utext="*{description}"></span></div>
+				<div class="user-position">位置：<span  th:utext="*{position}"></span></div>
+				<div class="user-job" >工作：<span th:utext="*{job}"></span></div>
+				<div class="user-school">加入时间：<span th:with="joinTime=*{joinTime}" th:utext="${#dates.format(joinTime, 'dd/MMM/yyyy HH:mm')}"></span></div>
+			</div>
+			
+        
+			<div class="clearfix" style="border-bottom: 1px dashed #ddd;"></div>
+			<div class="user-button" th:if="${session.user}!=null">
+                <a th:href="@{/toEditProfile}" class="button-follow" th:if="${session.user.uid}==${user.uid}">编辑信息</a>
+                <a th:href="@{/changePw}" class="button-change" th:if="${session.user.uid}==${user.uid}">修改密码</a>
+				<a th:href="@{/unfollow/{uid}(uid=${user.uid})}" class="button-follow" th:if="${session.user.uid}!=${user.uid} and ${following}==true">取消关注</a>
+				<a th:href="@{/follow/{uid}(uid=${user.uid})}" class="button-follow" th:if="${session.user.uid}!=${user.uid} and ${following}==false">关注</a>
+			</div>
+			<div class="user-post">
+				<div class="user-post-title"><span></span>&nbsp;发帖</div>
+				<ul class="user-post-list" >
+                        <li th:each="post : ${postList}">
+                            <span class="glyphicon glyphicon-file"></span>&nbsp;
+                            <a th:href="@{/toPost/{pid}(pid=${post.pid})}" th:utext="${post.title}"></a>
+                            <a class="user-post-delete" th:href="@{/deletePost/{pid}(pid=${post.pid})}" th:if="${session.user}!=null and ${session.user.uid}==${user.uid}">删除</a>
+                          	 <span class="user-post-time"> 发布于<time  th:with="publishTime=${post.publishTime}" th:utext="${#dates.format(publishTime,'dd/MM/yyyy HH:mm')}"></time></span>
+                        </li>
+                    
+				</ul>
+			</div>
+		</div>
+
+		<div class="m-right" th:object="${user}">
+			<div class="user-follow">
+				<div class="user-follow">关注了<span class="user-count" th:utext="*{followCount}">followCount</span>人</div>
+				<div class="user-follower">关注者<span class="user-count" th:utext="*{followerCount}">followerCount</span>人</div>
+			</div>
+			<div class="user-attr">
+				获赞：<span class="user-like-count" th:utext="*{likeCount}">likeCount</span>&nbsp;
+				发帖：<span class="user-post-count" th:utext="*{postCount}">postCount</span>
+
+			</div>
+			<div class="user-scan-count">个人主页被浏览<span class="user-scan-count" th:utext="*{scanCount}">scanCount</span>次</div>
+		</div>
+
+	</div><!-- 主体结束 -->
+	<div th:replace="base :: common_footer"></div>
+	<script th:inline="javascript" >
+	
+		$(function(){
+			
+			/* var deleteUrl = $(".user-post-delete").attr("href");
+			var deletePost = $(".user-post-delete");
+			deletePost.click(function(){
+				$.get(
+					deleteUrl,
+					function(){
+						alert("删除成功")
+					}
+				)
+			}) */
+		})
+		
+	</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

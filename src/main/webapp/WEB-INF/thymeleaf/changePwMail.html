@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+ Hello, <p th:text="${email}">Peter Static!</p>
+请点击以下链接重置密码，如果不能点击请手动复制到地址栏中重置账号密码！
+	<p th:utext="${url}+'changePw?code='+${code}">ss</p>
+</body>
+</html>

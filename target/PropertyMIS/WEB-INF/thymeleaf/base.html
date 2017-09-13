@@ -1,0 +1,53 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="common_header(title,links)">
+  <title th:utext="${title}">base</title>
+  <!-- Common styles and scripts -->
+	<link rel="stylesheet" type="text/css" th:href="@{/resources/css/bootstrap.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/resources/css/base.css}">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script type="text/javascript" th:src="@{/resources/js/jquery-1.10.2.min.js}"></script>
+	<script type="text/javascript" th:src="@{/resources/js/base.js}"></script>
+  <!--/* Per-page placeholder for additional links */-->
+  <th:block th:replace="${links} ?: ~{}" />
+</head>
+<body>
+	
+<div th:fragment="common_top" class="header clearfix">
+    <div class="w">
+        <h1 class="logo"><a th:href="@{/}">物业</a></h1>
+        <ul class="left-nav">
+            <li class="current-nav"><a th:href="@{/}">首页</a></li>
+            <li><a href="listTopic.do">缴费</a></li>
+            <li><a href="listImage.do">报修</a></li>
+            <li><a href="toMessage.do">投诉</a></li>
+        </ul>
+
+        <ul class="right-nav">
+           
+              
+                    <li th:if="${session.user!=null}" class="login2 relative">
+                        <a th:href="@{/toMyProfile}" id="profile"><img th:src="${session.user.headUrl}"></a>
+                        <ul id="down-menu">
+                            <li><a th:href="@{/toMyProfile}">个人主页</a></li>
+                            <li><a th:href="@{/logout}">退出登录</a></li>
+                        </ul>
+                    </li>
+                    <li th:unless="${session.user!=null}" class="login">
+                        <a th:href="@{/toLogin}">登录</a>
+                        <a th:href="@{/toLogin}">/</a>
+                        <a th:href="@{/toLogin#register}">注册</a>
+                    </li>  
+
+                <li>
+                    <a href="#"><span class="glyphicon glyphicon-search"></span></a>
+                </li>
+                <li><input type="text"></li>
+        </ul>
+    </div>
+
+</div>
+	<div th:fragment="common_footer" class="footer">
+	    <div class="w">DG论坛@2017 All Rights Reserved</div>
+	</div>
+</body>

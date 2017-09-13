@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.steel.mapper.CommentDao">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.steel.entity.Comment">
+		<id column="cid" property="cid" />
+		<result column="content" property="content" />
+		<result column="pid" property="pid" />
+		<result column="uid" property="uid" />
+		<result column="comment_time" property="commentTime" />
+	</resultMap>
+	<resultMap id="CommentResultMap" type="com.steel.entity.Comment">
+		<id column="cid" property="cid" />
+		<result column="content" property="content" />
+		<result column="comment_time" property="commentTime" />
+
+		<association column="uid" property="user" javaType="com.steel.entity.User" >
+			<id column="uid" property="uid"></id>
+			<result column="nickname" property="nickname"></result>
+			<result column="head_url" property="headUrl"></result>
+		</association>	
+	</resultMap>
+	<select id="selectCommentList" resultMap="CommentResultMap">
+		select * from Comment c ,User u where c.pid = #{pid} and u.uid=c.uid
+	</select>
+	<insert id="insertComment">
+		insert into Comment(pid,uid,content,comment_time) values(#{post.pid},#{user.uid},#{content},#{commentTime})
+	</insert>
+</mapper>

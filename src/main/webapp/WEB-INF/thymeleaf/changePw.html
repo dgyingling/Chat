@@ -1,0 +1,53 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{base :: common_header(~{::title/text()},~{::link})}">
+	<title>重置密码</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/resources/css/editProfile.css}">
+</head>
+
+
+<body>
+	<div th:replace="base :: common_top"></div>
+	 <div style="margin-top: 100px;margin-left:300px;margin-bottom: 188px;">
+		<div class="edit-header"><span></span>&nbsp;修改密码</div>
+		<div th:if="${session.user!=null}">
+			<form th:action="@{/updatePassword}" method="post">
+				<div class="edit-title">
+	                <div class="text-danger" th:utext="${passwordError }">passwordError</div>
+					原密码：<input type="password" name="password">
+				</div>
+				<div class="edit-title">
+					新密码：<input type="password" name="newpassword">
+				</div>
+				<div class="edit-title">
+					确&nbsp;&nbsp;&nbsp;认：<input type="password" name="repassword">
+				</div>
+				<div class="relative" style="margin-right:150px;">
+					<button class="edit-submit">确认修改</button>
+				</div>
+		  </form>
+		</div>
+		<div th:if="${session.user==null}">
+			<form th:action="@{/resetPassword}" method="post">
+				<input type="hidden" th:value="${code}" name="code">
+				<div class="edit-title">
+	                <div class="text-danger" th:utext="${passwordError }">passwordError</div>
+					原密码：<input type="password" name="password">
+				</div>
+				<div class="edit-title">
+					新密码：<input type="password" name="newpassword">
+				</div>
+				<div class="edit-title">
+					确&nbsp;&nbsp;&nbsp;认：<input type="password" name="repassword">
+				</div>
+				<div class="relative" style="margin-right:150px;">
+					<button class="edit-submit">确认重置</button>
+				</div>
+		  </form>
+		</div>
+	</div>
+	<div th:replace="base :: common_footer"></div>
+
+	
+</body>
+</html>

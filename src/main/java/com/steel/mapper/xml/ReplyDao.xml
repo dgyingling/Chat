@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.steel.mapper.ReplyDao">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.steel.entity.Reply">
+		<id column="rid" property="rid" />
+		<result column="content" property="content" />
+		<result column="reply_time" property="replyTime" />
+		<result column="reply_to" property="replyTo" />
+		<association column="uid" property="user" javaType="com.steel.entity.User" >
+			<id column="uid" property="uid"></id>
+			<result column="nickname" property="nickname"></result>
+			<result column="head_url" property="headUrl"></result>
+		</association>
+	</resultMap>
+	<select id="selectReplyList" resultMap="BaseResultMap">
+		select * from Reply r,User u where r.cid = #{cid} and u.uid = r.uid
+	</select>
+	<insert id="insertReply">
+		insert into reply(content,reply_time,reply_to,uid,cid) values (#{content},#{replyTime},#{replyTo},#{user.uid},#{comment.cid})
+	</insert>
+</mapper>
